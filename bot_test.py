@@ -16,6 +16,20 @@ def enviar_mensagem(texto):
     r = requests.post(url, data=payload)
     return r.json()
 
+from offer_rules import is_good_offer
+
 if __name__ == "__main__":
-    mensagem = "🤖 <b>Teste OK</b>\n\nBot rodando via GitHub Actions."
-    print(enviar_mensagem(mensagem))
+    produto = "Cafeteira Elétrica Exemplo"
+    preco_antigo = 299.90
+    preco_novo = 199.90
+
+    if is_good_offer(preco_antigo, preco_novo):
+        mensagem = (
+            f"🔥 <b>OFERTA REAL</b>\n\n"
+            f"{produto}\n"
+            f"💰 De: R$ {preco_antigo:.2f}\n"
+            f"➡️ Por: R$ {preco_novo:.2f}\n\n"
+            f"👉 Oferta aprovada automaticamente"
+        )
+        enviar_mensagem(mensagem)
+
