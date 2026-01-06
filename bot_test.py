@@ -16,20 +16,21 @@ def enviar_mensagem(texto):
     r = requests.post(url, data=payload)
     return r.json()
 
+from amazon_collector import get_sample_amazon_offers
 from offer_rules import is_good_offer
 
 if __name__ == "__main__":
-    produto = "Cafeteira Elétrica Exemplo"
-    preco_antigo = 299.90
-    preco_novo = 199.90
+    ofertas = get_sample_amazon_offers()
 
-    if is_good_offer(preco_antigo, preco_novo):
-        mensagem = (
-            f"🔥 <b>OFERTA REAL</b>\n\n"
-            f"{produto}\n"
-            f"💰 De: R$ {preco_antigo:.2f}\n"
-            f"➡️ Por: R$ {preco_novo:.2f}\n\n"
-            f"👉 Oferta aprovada automaticamente"
-        )
-        enviar_mensagem(mensagem)
+    for oferta in ofertas:
+        if is_good_offer(oferta["old_price"], oferta["new_price"]):
+            mensagem = (
+                f"🔥 <b>OFERTA REAL</b>\n\n"
+                f"{oferta['product']}\n"
+                f"💰 De: R$ {oferta['old_price']:.2f}\n"
+                f"➡️ Por: R$ {oferta['new_price']:.2f}\n\n"
+                f"📦 {oferta['store']}"
+            )
+            enviar_mensagem(mensagem)
+
 
