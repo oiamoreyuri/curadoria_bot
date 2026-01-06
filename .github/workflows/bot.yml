@@ -24,10 +24,6 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
+          MIN_DISCOUNT: ${{ secrets.MIN_DISCOUNT }}
         run: |
           python bot_test.py
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
-          MIN_DISCOUNT: ${{ secrets.MIN_DISCOUNT }}
-
