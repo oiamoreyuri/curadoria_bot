@@ -1,5 +1,9 @@
 # bot test file
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
 import requests
 import os
 
@@ -21,17 +25,31 @@ from offer_rules import is_good_offer
 
 if __name__ == "__main__":
     ofertas = get_amazon_offers(limit=5)
+    logging.info(f"Ofertas coletadas: {len(ofertas)}")
 
     for oferta in ofertas:
-        if is_good_offer(oferta["old_price"], oferta["new_price"]):
+        old_p = oferta["old_price"]
+        new_p = oferta["new_price"]
+
+        if old_p > 0:
+            discount = (old_p - new_p) / old_p
+        else:
+            discount = 0
+
+        logging.info(
+            f"{oferta['product']} | old: {old_p} | new: {new_p} | discount: {discount:.2%}"
+        )
+
+        if is_good_offer(old_p, new_p):
             mensagem = (
                 f"🔥 <b>OFERTA REAL</b>\n\n"
                 f"{oferta['product']}\n"
-                f"💰 De: R$ {oferta['old_price']:.2f}\n"
-                f"➡️ Por: R$ {oferta['new_price']:.2f}\n\n"
+                f"💰 De: R$ {old_p:.2f}\n"
+                f"➡️ Por: R$ {new_p:.2f}\n\n"
                 f"📦 {oferta['store']}"
             )
             enviar_mensagem(mensagem)
+
 
 
 
