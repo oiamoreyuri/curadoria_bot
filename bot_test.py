@@ -16,11 +16,11 @@ def enviar_mensagem(texto):
     r = requests.post(url, data=payload)
     return r.json()
 
-from amazon_collector import get_sample_amazon_offers
+from amazon_collector import get_amazon_offers
 from offer_rules import is_good_offer
 
 if __name__ == "__main__":
-    ofertas = get_sample_amazon_offers()
+    ofertas = get_amazon_offers(limit=5)
 
     for oferta in ofertas:
         if is_good_offer(oferta["old_price"], oferta["new_price"]):
@@ -32,5 +32,6 @@ if __name__ == "__main__":
                 f"📦 {oferta['store']}"
             )
             enviar_mensagem(mensagem)
+
 
 
